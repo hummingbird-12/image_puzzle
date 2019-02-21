@@ -3,14 +3,9 @@ import numpy as np
 import math
 from random import shuffle
 
-class Piece:
-    pieceNum = -1
-    pieceRow = 0
-    pieceCol = 0
-    pieceChn = 0
-    pieceStart = (0, 0)
-    pieceData = None
 
+# Piece class, holds data of each piece
+class Piece:
     def __init__(self, num, row, col, chn, start, data):
         self.pieceNum = num
         self.pieceRow = row
@@ -18,37 +13,47 @@ class Piece:
         self.pieceChn = chn
         self.pieceStart = start
         self.pieceData = np.ndarray((row, col, chn), buffer=data, dtype=np.uint8)
-        #print(len(self.pieceData), len(self.pieceData[0]), len(self.pieceData[0][0]))
-        #cv2.imshow("piece{}".format(num), self.pieceData)
-        #cv2.waitKey(0)
 
 
+# image information
 img = cv2.imread('lenna.png', cv2.IMREAD_COLOR)
-
 imgRow = len(img)
 imgCol = len(img[0])
 imgChn = len(img[0][0])
 
-# pDim = int(input("Enter size of puzzle: "))
-pDim = 256
+# piece information
+pDim = int(input("Enter size of puzzle: "))
 pRow = math.ceil(imgRow / pDim)
 pCol = math.ceil(imgCol / pDim)
 pCnt = pRow * pCol
 pList = []
 
+# creation of pieces
 for pIt in range(pCnt):
     temp = np.zeros((pDim, pDim, imgChn), dtype=np.uint8)
-    #print(len(temp), len(temp[0]), len(temp[0][0]))
     startRow = pDim * math.floor(pIt / pRow)
     startCol = pDim * (pIt % pCol)
-    #print(startRow, startCol)
     for i in range(startRow, startRow + pDim):
+        if i >= imgRow:
+            break
         for j in range(startCol, startCol + pDim):
+            if j >= imgCol:
+                continue
             temp[i - startRow][j - startCol] = img[i][j]
     pList.append(Piece(pIt, pDim, pDim, imgChn, (startRow, startCol), temp))
 
-shuffle(pList)
-for piece in pList:
-    cv2.imshow("piece{}".format(piece.pieceNum), piece.pieceData)
+shuffle(pList)  # randomize pieces
+
+# get pieces together in a single image
+temp = np.zeros((pDim * pRow, pDim * pCol, imgChn), dtype=np.uint8)
+for pIt in range(pCnt):
+    startRow = pDim * math.floor(pIt / pRow)
+    startCol = pDim * (pIt % pCol)
+    for i in range(startRow, startRow + pDim):
+        for j in range(startCol, startCol + pDim):
+            temp[i][j] = pList[pIt].pieceData[i - startRow][j - startCol]
+
+# show result puzzle image
+cv2.imshow("Puzzle Image", temp)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
