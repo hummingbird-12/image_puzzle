@@ -33,13 +33,7 @@ for pIt in range(pCnt):
     temp = np.zeros((pDim, pDim, imgChn), dtype=np.uint8)
     startRow = pDim * math.floor(pIt / pRow)
     startCol = pDim * (pIt % pCol)
-    for i in range(startRow, startRow + pDim):
-        if i >= imgRow:
-            break
-        for j in range(startCol, startCol + pDim):
-            if j >= imgCol:
-                continue
-            temp[i - startRow][j - startCol] = img[i][j]
+    temp[:] = img[startRow:startRow + pDim, startCol:startCol + pDim]
     pList.append(Piece(pIt, pDim, pDim, imgChn, (startRow, startCol), temp))
 
 shuffle(pList)  # randomize pieces
@@ -49,9 +43,7 @@ temp = np.zeros((pDim * pRow, pDim * pCol, imgChn), dtype=np.uint8)
 for pIt in range(pCnt):
     startRow = pDim * math.floor(pIt / pRow)
     startCol = pDim * (pIt % pCol)
-    for i in range(startRow, startRow + pDim):
-        for j in range(startCol, startCol + pDim):
-            temp[i][j] = pList[pIt].pieceData[i - startRow][j - startCol]
+    temp[startRow:startRow + pDim, startCol:startCol + pDim] = pList[pIt].pieceData[:pDim, :pDim]
 
 # show result puzzle image
 cv2.imshow("Puzzle Image", temp)
