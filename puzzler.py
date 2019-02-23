@@ -2,15 +2,14 @@ import cv2
 import numpy as np
 import math
 from random import shuffle
+import readImage as readImg
 import Piece as Pc
 import drawPieces as drawP
 
 
-# image information
-img = cv2.imread('lenna.png', cv2.IMREAD_COLOR)
-imgRow = len(img)
-imgCol = len(img[0])
-imgChn = len(img[0][0])
+# filename = input("Enter image file name: ")
+filename = "lenna.png"
+img, imgRow, imgCol, imgChn = readImg.read_image(filename, cv2.IMREAD_COLOR)
 
 # piece information
 pDim = int(input("Enter size of puzzle: "))
