@@ -2,17 +2,8 @@ import cv2
 import numpy as np
 import math
 from random import shuffle
-
-
-# Piece class, holds data of each piece
-class Piece:
-    def __init__(self, num, row, col, chn, start, data):
-        self.pieceNum = num
-        self.pieceRow = row
-        self.pieceCol = col
-        self.pieceChn = chn
-        self.pieceStart = start
-        self.pieceData = np.ndarray((row, col, chn), buffer=data, dtype=np.uint8)
+import Piece as Pc
+import drawPieces as drawP
 
 
 # image information
@@ -41,18 +32,9 @@ for pIt in range(pCnt):
             if j >= imgCol:
                 continue
             temp[i - startRow][j - startCol] = img[i][j]
-    pList.append(Piece(pIt, pDim, pDim, imgChn, (startRow, startCol), temp))
+    pList.append(Pc.Piece(pIt, pDim, pDim, imgChn, (startRow, startCol), temp))
 
 shuffle(pList)  # randomize pieces
 
-# get pieces together in a single image
-temp = np.zeros((pDim * pRow, pDim * pCol, imgChn), dtype=np.uint8)
-for pIt in range(pCnt):
-    startRow = pDim * math.floor(pIt / pRow)
-    startCol = pDim * (pIt % pCol)
-    temp[startRow:startRow + pDim, startCol:startCol + pDim] = pList[pIt].pieceData[:pDim, :pDim]
-
-# show result puzzle image
-cv2.imshow("Puzzle Image", temp)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+temp = drawP.combine_pieces(pDim, pRow, pCol, pCnt, imgChn, pList)
+drawP.draw_image(temp)
