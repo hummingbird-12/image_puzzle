@@ -12,28 +12,30 @@ filename = "lenna.png"
 img, imgRow, imgCol, imgChn = readImg.read_image(filename, cv2.IMREAD_COLOR)
 
 # piece information
-pDim = int(input("Enter size of puzzle: "))
-pRow = math.ceil(imgRow / pDim)
-pCol = math.ceil(imgCol / pDim)
-pCnt = pRow * pCol
+pCnt_column = int(input("Pieces in a column: "))
+pCnt_row = int(input("Pieces in a row: "))
+pCnt_total = pCnt_row * pCnt_column
+pSize_vertical = math.ceil(imgCol / pCnt_column)
+pSize_horizontal = math.ceil(imgRow / pCnt_row)
 pList = []
 
 # creation of pieces
-for pIt in range(pCnt):
-    temp = np.zeros((pDim, pDim, imgChn), dtype=np.uint8)
-    startRow = pDim * math.floor(pIt / pRow)
-    startCol = pDim * (pIt % pCol)
+for pIt in range(pCnt_total):
+    temp = np.zeros((pSize_vertical, pSize_horizontal, imgChn), dtype=np.uint8)
+    startRow = pSize_vertical * math.floor(pIt / pCnt_row)
+    startCol = pSize_horizontal * (pIt % pCnt_row)
     # temp[:] = img[startRow:startRow + pDim, startCol:startCol + pDim]
-    for i in range(startRow, startRow + pDim):
+    for i in range(startRow, startRow + pSize_vertical):
         if i >= imgRow:
             break
-        for j in range(startCol, startCol + pDim):
+        for j in range(startCol, startCol + pSize_horizontal):
             if j >= imgCol:
                 continue
             temp[i - startRow][j - startCol] = img[i][j]
-    pList.append(Pc.Piece(pIt, pDim, pDim, imgChn, (startRow, startCol), temp))
+    pList.append(Pc.Piece(pIt, pSize_vertical, pSize_horizontal, imgChn, (startRow, startCol), temp))
 
 shuffle(pList)  # randomize pieces
 
-temp = drawP.combine_pieces(pDim, pRow, pCol, pCnt, imgChn, pList)
+temp = drawP.combine_pieces(pSize_vertical, pSize_horizontal, pCnt_row, pCnt_column, pCnt_total, imgChn, pList)
 drawP.draw_image(temp)
+cv2.imwrite("lenna_puzzle.png", temp)
