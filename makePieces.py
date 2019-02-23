@@ -25,5 +25,5 @@ def get_pieces(img, img_row, img_col, img_chn):
                 if j >= img_col:
                     continue
                 temp[i - start_row][j - start_col] = img[i][j]
-        p_list.append(Piece(pIt, size_vertical, size_horizontal, img_chn, (start_row, start_col), temp))
+        p_list.append(Piece(pIt, size_vertical, size_horizontal, img_chn, (start_row, start_col), temp, cnt_total))
     return p_list, size_vertical, size_horizontal, cnt_row, cnt_column, cnt_total
