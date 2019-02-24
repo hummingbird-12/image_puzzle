@@ -17,7 +17,6 @@ def get_pieces(img, img_row, img_col, img_chn):
         temp = np.zeros((size_vertical, size_horizontal, img_chn), dtype=np.uint8)
         start_row = size_vertical * math.floor(pIt / cnt_row)
         start_col = size_horizontal * (pIt % cnt_row)
-        # temp[:] = img[start_row:start_row + pDim, start_col:start_col + pDim]
         for i in range(start_row, start_row + size_vertical):
             if i >= img_row:
                 break

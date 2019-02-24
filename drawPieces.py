@@ -15,7 +15,7 @@ def combine_pieces(size_vertical, size_horizontal, cnt_row, cnt_col, cnt_total, 
 
 
 # show result puzzle image
-def draw_image(temp):
-    cv2.imshow("Puzzle Image", temp)
+def draw_image(temp, window_name):
+    cv2.imshow(window_name, temp)
     cv2.waitKey(0)
     cv2.destroyAllWindows()

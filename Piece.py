@@ -28,11 +28,12 @@ class Piece:
 
         self.similarity = []
         for i in range(total):
-            self.similarity.append((-1, -1, -1))
+            self.similarity.append(None)
 
-        self.toUp = self.toRight = self.toDown = self.toLeft = None
+        self.neighbors = [None for x in range(4)]
 
 
+# calculate difference of pixels' each channel value
 def pixel_difference(px1, px2):
     diff = 0
     for i in range(len(px1)):
@@ -41,6 +42,7 @@ def pixel_difference(px1, px2):
     return diff
 
 
+# calculate difference between pieces
 def calculate_difference(piece1: Piece, piece2: Piece, index1, index2):
     vertical_12 = pixel_difference(
         (piece1.pxDownLeft, piece1.pxDown, piece1.pxDownRight),
@@ -64,3 +66,18 @@ def calculate_difference(piece1: Piece, piece2: Piece, index1, index2):
 
     piece1.similarity[index2] = sorted(temp1)
     piece2.similarity[index1] = sorted(temp2)
+
+
+# search for neighbors
+def find_neighbors(piece: Piece):
+    candidates = [None for x in range(4)]
+    for i in range(len(piece.similarity)):
+        if piece.similarity[i] is None:
+            continue
+        temp = piece.similarity[i][0]
+        if candidates[temp[1]] is None or candidates[temp[1]][1][0] > temp[0]:
+            candidates[temp[1]] = (i, temp)
+
+    for entry in candidates:
+        if entry is not None and entry[1][0] <= 150:
+            piece.neighbors[entry[1][1]] = entry[0]
