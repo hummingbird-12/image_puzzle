@@ -2,6 +2,7 @@ import cv2
 import os
 import sys
 from pathlib import Path
+from checkInput import check_input
 import readImage as readImg
 from makePieces import get_pieces
 import drawPieces as drawP
@@ -9,6 +10,7 @@ import Piece
 
 
 if __name__ == "__main__":
+    check_input("unpuzzler.py")
     filename = sys.argv[1]      # filename = input("Enter image file name: ")
     fileTest = Path(filename)
     if not fileTest.is_file():
