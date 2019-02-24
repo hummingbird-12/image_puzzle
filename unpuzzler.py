@@ -27,11 +27,14 @@ if __name__ == "__main__":
                 continue
             Piece.piece_difference(pList[i], pList[j])
 
-    startPiece = pList[0]
+    startPiece = None
     for piece in pList:
         Piece.find_neighbors(piece)
-        if piece.neighbors[0] == piece.neighbors[3] is None:
+        if piece.neighbors[0] is None and piece.neighbors[3] is None:
             startPiece = piece
+    if startPiece is None:
+        print("Could not find starting piece... but here is an attempt.")
+        startPiece = pList[0]
 
     black = np.zeros((pSize_vertical, pSize_horizontal, imgChn), dtype=np.uint8)
     blackPiece = Piece.Piece(-1, pSize_vertical, pSize_horizontal, imgChn, (0, 0), black, pCnt_total)

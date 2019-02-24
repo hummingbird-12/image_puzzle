@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 
 # Piece class, holds data of each piece
@@ -12,9 +11,6 @@ class Piece:
         self.pieceStart = start
         self.pieceData = np.ndarray((s_vert, s_horz, chn), buffer=data, dtype=np.uint8)
         self.pieceTotal = total
-
-        mid_vert = math.floor(s_vert / 2)
-        mid_horz = math.floor(s_horz / 2)
 
         self.sideUp = []
         self.sideRight = []
@@ -71,6 +67,7 @@ def piece_difference(piece1: Piece, piece2: Piece):
 # search for neighbors
 def find_neighbors(piece: Piece):
     candidates = [None for x in range(4)]
+    # find the best candidate for each direction
     for i in range(len(piece.difference)):
         if piece.difference[i] is None:
             continue
@@ -78,6 +75,8 @@ def find_neighbors(piece: Piece):
         if candidates[temp[1]] is None or candidates[temp[1]][1][0] > temp[0]:
             candidates[temp[1]] = (i, temp)
 
+    # test if candidate is eligible as neighbor
     for entry in candidates:
-        if entry is not None and entry[1][0] <= 150:
+        if entry is not None and entry[1][0] <= 0.6 *\
+                (piece.size_vertical if (entry[1][1] == 1 or entry[1][1] == 3) else piece.size_horizontal):
             piece.neighbors[entry[1][1]] = entry[0]
