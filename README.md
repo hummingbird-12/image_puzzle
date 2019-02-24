@@ -42,7 +42,7 @@ The example command will attempt to solve a 4 X 3 pieces puzzle of *lenna_puzzle
 
 ### Advanced
 
-If unpuzzling does not rearrange pieces correctly, play around with threshold values *PIXEL_DIFFERENCE_THRESHOLD* and *DIFFERENCE_RATE_THRESHOLD* in *Piece.py*.
+If unpuzzling does not rearrange pieces correctly, play around with threshold values ***PIXEL_DIFFERENCE_THRESHOLD*** and ***DIFFERENCE_RATE_THRESHOLD*** in *Piece.py*.
 
 [original_image]: ./lenna.png "Original Image - lenna.png"
 [puzzle_image]: ./lenna_puzzle.png "Puzzle Image - lenna_puzzle.png"
