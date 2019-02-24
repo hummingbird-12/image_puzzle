@@ -32,14 +32,16 @@ class Piece:
         self.neighbors = [None for x in range(4)]
 
 
-# calculate difference of pixels' each channel value
+# determine difference of pixel's each channel value
 def pixel_difference(px1, px2):
+    PIXEL_DIFFERENCE_THRESHOLD = 70
     diff = 0
     for i in range(len(px1)):
         diff += abs(int(px1[i] - int(px2[i])))
-    return False if diff < 70 else True
+    return False if diff < PIXEL_DIFFERENCE_THRESHOLD else True
 
 
+# calculate different pixels between two sides
 def side_difference(side1, side2):
     difference = 0
     for i in range(len(side1)):
@@ -47,12 +49,14 @@ def side_difference(side1, side2):
     return difference
 
 
+# calculate difference between two pieces in all directions
 def piece_difference(piece1: Piece, piece2: Piece):
     vertical_12 = side_difference(piece1.sideDown, piece2.sideUp)
     vertical_21 = side_difference(piece2.sideDown, piece1.sideUp)
     horizontal_12 = side_difference(piece1.sideRight, piece2.sideLeft)
     horizontal_21 = side_difference(piece2.sideRight, piece1.sideLeft)
 
+    # clockwise direction
     temp1 = [vertical_21, horizontal_12, vertical_12, horizontal_21]
     temp2 = [vertical_12, horizontal_21, vertical_21, horizontal_12]
 
@@ -60,12 +64,14 @@ def piece_difference(piece1: Piece, piece2: Piece):
         temp1[i] = (temp1[i], i)
         temp2[i] = (temp2[i], i)
 
+    # non-decreasing sort of difference
     piece1.difference[piece2.pieceNum] = sorted(temp1)
     piece2.difference[piece1.pieceNum] = sorted(temp2)
 
 
 # search for neighbors
 def find_neighbors(piece: Piece):
+    DIFFERENCE_RATE_THRESHOLD = 0.6
     candidates = [None for x in range(4)]
     # find the best candidate for each direction
     for i in range(len(piece.difference)):
@@ -77,6 +83,6 @@ def find_neighbors(piece: Piece):
 
     # test if candidate is eligible as neighbor
     for entry in candidates:
-        if entry is not None and entry[1][0] <= 0.6 *\
+        if entry is not None and entry[1][0] <= DIFFERENCE_RATE_THRESHOLD *\
                 (piece.size_vertical if (entry[1][1] == 1 or entry[1][1] == 3) else piece.size_horizontal):
             piece.neighbors[entry[1][1]] = entry[0]
