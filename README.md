@@ -24,7 +24,6 @@ Result image is stored as ***filename*_puzzle.png**.
 
 The example command will create a 4 X 3 pieces puzzle of *lenna.png*.
 
-
 ### Unpuzzling Image
 ```bash
 [usage]:      python3 unpuzzler.py file_name pieces_vertically pieces_horizontally
@@ -34,3 +33,7 @@ The example command will create a 4 X 3 pieces puzzle of *lenna.png*.
 Result image is stored as ***filename*_solve.png**.
 
 The example command will attempt to solve a 4 X 3 pieces puzzle of *lenna_puzzle.png*.
+
+### Advanced
+
+If unpuzzling does not rearrange pieces correctly, play around with threshold values *PIXEL_DIFFERENCE_THRESHOLD* and *DIFFERENCE_RATE_THRESHOLD* in *Piece.py*. 
