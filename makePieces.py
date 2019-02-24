@@ -1,12 +1,13 @@
 import numpy as np
 import math
+import sys
 from Piece import Piece
 
 
 def get_pieces(img, img_row, img_col, img_chn):
     # piece information
-    cnt_column = int(input("Pieces in a column: "))
-    cnt_row = int(input("Pieces in a row: "))
+    cnt_column = int(sys.argv[2])   # cnt_column = int(input("Pieces in a column: "))
+    cnt_row = int(sys.argv[3])      # cnt_row = int(input("Pieces in a row: "))
     cnt_total = cnt_row * cnt_column
     size_vertical = math.ceil(img_col / cnt_column)
     size_horizontal = math.ceil(img_row / cnt_row)

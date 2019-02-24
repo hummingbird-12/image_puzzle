@@ -9,7 +9,7 @@ import Piece
 
 
 if __name__ == "__main__":
-    filename = input("Enter image file name: ")
+    filename = sys.argv[1]      # filename = input("Enter image file name: ")
     fileTest = Path(filename)
     if not fileTest.is_file():
         print("Image file NOT found.")
