@@ -35,7 +35,7 @@ class Piece:
 
 # determine difference of pixel's each channel value
 def pixel_difference(px1, px2):
-    PIXEL_DIFFERENCE_THRESHOLD = 70
+    PIXEL_DIFFERENCE_THRESHOLD = 30
     diff = 0
     for i in range(len(px1)):
         diff += abs(int(px1[i] - int(px2[i])))
