@@ -12,6 +12,7 @@ class Piece:
         self.pieceData = np.ndarray((s_vert, s_horz, chn), buffer=data, dtype=np.uint8)
         self.pieceTotal = total
 
+        # the 4 borders of the piece
         self.sideUp = []
         self.sideRight = []
         self.sideDown = []
