@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 import os
 import sys
 from pathlib import Path
@@ -22,7 +23,9 @@ if __name__ == "__main__":
 
     for i in range(pCnt_total):
         for j in range(i + 1, pCnt_total):
-            Piece.calculate_difference(pList[i], pList[j], i, j)
+            if i == j:
+                continue
+            Piece.piece_difference(pList[i], pList[j])
 
     startPiece = pList[0]
     for piece in pList:
@@ -30,11 +33,14 @@ if __name__ == "__main__":
         if piece.neighbors[0] == piece.neighbors[3] is None:
             startPiece = piece
 
-    temp = [startPiece for x in range(pCnt_total)]
+    black = np.zeros((pSize_vertical, pSize_horizontal, imgChn), dtype=np.uint8)
+    blackPiece = Piece.Piece(-1, pSize_vertical, pSize_horizontal, imgChn, (0, 0), black, pCnt_total)
+    temp = [blackPiece for x in range(pCnt_total)]
+    temp[0] = startPiece
     for i in range(pCnt_total):
-        if i % pCnt_row < pCnt_row - 1:
+        if i % pCnt_row < pCnt_row - 1 and temp[i].neighbors[1] is not None:
             temp[i + 1] = pList[temp[i].neighbors[1]]
-        if i / pCnt_row < pCnt_column - 1:
+        if i / pCnt_row < pCnt_column - 1 and temp[i].neighbors[2] is not None:
             temp[i + pCnt_row] = pList[temp[i].neighbors[2]]
 
     filename = os.path.splitext(filename)[0] + "_solve.png"
